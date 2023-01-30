@@ -1,4 +1,4 @@
-use std::{env::args, fs::File, io::Read};
+use std::{env::args, fs::File, io::{BufReader, BufRead}};
 
 fn main() {
     for arg in args().skip(1) {
@@ -12,10 +12,10 @@ fn main() {
 }
 
 fn dump(filename: &str) -> std::io::Result<()> {
-    let mut file = File::open(filename)?;
-    let mut contents = String::new();
-    let bytes_read = file.read_to_string(&mut contents)?;
-    println!("Read {bytes_read} bytes.");
-    println!("{contents}");
+    let file = File::open(filename)?;
+    let buffer = BufReader::new(file);
+    for (i, line) in buffer.lines().enumerate() {
+        println!("{}: {}", i + 1, line?);
+    }
     Ok(())
 }
