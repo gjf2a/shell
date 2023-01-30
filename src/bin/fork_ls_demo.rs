@@ -7,6 +7,7 @@ fn main() {
         Ok(ForkResult::Parent { child, .. }) => {
             println!("Continuing execution in parent process, new child has pid: {}", child);
             waitpid(child, None).unwrap();
+            println!("Returned to parent - child is finished.");
         }
         Ok(ForkResult::Child) => {
             let cmd = externalize("ls");
