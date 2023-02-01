@@ -10,7 +10,7 @@ fn main() {
             println!("Returned to parent - child is finished.");
         }
         Ok(ForkResult::Child) => {
-            let cmd = externalize("ls");
+            let cmd = externalize("ls -lR");
             match execvp::<CString>(cmd[0].as_c_str(), &cmd) {
                 Ok(_) => {},
                 Err(e) => {println!("Could not execute: {e}");},
@@ -20,9 +20,8 @@ fn main() {
      }
 }
 
-fn externalize(command: &str) -> Box<[CString]> {
-    let converted = command.split_whitespace()
+fn externalize(command: &str) -> Vec<CString> {
+    command.split_whitespace()
         .map(|s| CString::new(s).unwrap())
-        .collect::<Vec<_>>();
-    converted.into_boxed_slice()
+        .collect()
 }
