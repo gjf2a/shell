@@ -52,16 +52,17 @@ fn histograms(use_all: bool, filenames: &[String]) -> anyhow::Result<()> {
 }
 
 fn print_histogram(histogram: &HashMap<String,u64>) {
-    for (key, value) in histogram.iter() {
+    let sorted = sorted_histogram(histogram);
+    for (key, value) in sorted.iter() {
         println!("{key}: {value}");
     }
 }
 
-fn sorted_histogram(histogram: &HashMap<String,u64>) -> Vec<(String,u64)> {
+fn sorted_histogram(histogram: &HashMap<String,u64>) -> Vec<(&String,u64)> {
     let mut counts = Vec::new();
     for (key, value) in histogram.iter() {
-        counts.push((key.clone(), *value));
+        counts.push((key, *value));
     }
-    counts.sort_by(|w1, w2| w1.1.cmp(&w2.1));
+    counts.sort_by(|w1, w2| w2.1.cmp(&w1.1));
     counts
 }
