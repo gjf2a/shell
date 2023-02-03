@@ -1,4 +1,4 @@
-use nix::{sys::{wait::waitpid, stat::Mode},fcntl::{open, OFlag}, unistd::{fork, ForkResult, write, read}};
+use nix::{sys::{wait::waitpid, stat::Mode},fcntl::{open, OFlag}, unistd::{fork, ForkResult, read}};
 
 fn main() -> anyhow::Result<()> {
     let filename = std::env::args().skip(1).next().unwrap();
