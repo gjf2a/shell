@@ -3,20 +3,20 @@ use nix::{sys::{wait::waitpid, stat::Mode},fcntl::{open, OFlag}, unistd::{fork, 
 fn main() -> anyhow::Result<()> {
     let filename = std::env::args().skip(1).next().unwrap();
     let fd = open(filename.as_str(), OFlag::O_RDONLY, Mode::empty())?;
-    match unsafe{fork()} {
-        Ok(ForkResult::Parent { child, .. }) => {
-            println!("Continuing execution in parent process, new child has pid: {}", child);
+    match unsafe {fork()} {
+        Ok(ForkResult::Parent {child, ..}) => {
+            println!("In parent; child is {}", child);
             waitpid(child, None).unwrap();
-            println!("Returned to parent - child is finished.");
+            println!("Back in parent");
             read_some("parent", fd)?;
         }
         Ok(ForkResult::Child) => {
-            println!("Child started");
+            println!("In child");
             read_some("child", fd)?;
             println!("Child finished");
         }
-        Err(_) => println!("Fork failed"),
-     }
+        Err(_) => {println!("No fork!");}
+    }
      Ok(())
 }
 
