@@ -17,7 +17,7 @@ fn main() -> anyhow::Result<()> {
         nix::unistd::ForkResult::Child => {
             let (wc_in, ls_out) = pipe()?;
             match unsafe {fork()}? {
-                nix::unistd::ForkResult::Parent { child } => {
+                nix::unistd::ForkResult::Parent { child: _ } => {
                     close(ls_out)?;
                     dup2(wc_in, 0)?;
                     execvp(&wc[0], &wc)?;
