@@ -6,7 +6,6 @@ fn main() {
             println!("{part}");
         }
     }
-    
 }
 
 fn splitter(s: &str, spl: char) -> Vec<String> {
